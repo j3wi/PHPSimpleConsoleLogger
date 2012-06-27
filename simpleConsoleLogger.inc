@@ -49,9 +49,11 @@ function getFunction($trace) {
 
 function getClass($trace) {
 	$caller = skipLoggerCallsFromTraceForClassAndFunction($trace);
+	$class = "";
 	if (isset($caller['class'])){
-		$class = $caller['class'].'->';
+		$class = $caller['class'];
 	}
+	return $class;
 }
 
 function skipLoggerCallsFromTraceForClassAndFunction($trace) {
