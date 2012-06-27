@@ -33,8 +33,7 @@ It's defined in the **formatMessage** function if you want to change it::
 
 
 Example:
-~~~~~~
-
+-----------
 If we call directly from a file::
 
     logger("Validating user: foobar")
