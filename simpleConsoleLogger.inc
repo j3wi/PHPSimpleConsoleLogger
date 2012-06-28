@@ -39,7 +39,7 @@ function getLine($trace) {
 
 function getFunction($trace) {
 	try {
-		tryGetClass($trace);
+		return tryGetFunction($trace);
 	} catch (Exception $e) {
 		return "";
 	}
@@ -56,7 +56,7 @@ function tryGetFunction($trace) {
 
 function getClass($trace) {
 	try {
-		tryGetClass($trace);
+		return tryGetClass($trace);
 	} catch (Exception $e) {
 		return "";
 	}
