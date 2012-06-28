@@ -1,11 +1,34 @@
 <?php 
 include 'logger/simpleConsoleLoggerConstants.inc';
 
+define('SKIP_VALUE_FOR_CLASS_OR_FUNCTIONS', 3);
+define('SKIP_VALUE_FOR_FILE_OR_LINE', 2);
+
 function logger($message) {
+	logIfLogEnabled($message);
+}
+
+function logIfLogEnabled($message) {
 	if (LOG_ENABLED){
-		$messageWithInfo = prefixCallerInfo($message);
+		$correctedMessage = correctMessage($message);
+		$messageWithInfo = prefixCallerInfo($correctedMessage);
 		writeJSLogger(addslashes($messageWithInfo));
 	}
+}
+
+function correctMessage($message) {
+	if (is_string($message)) {
+		$message = addslashes($message);
+	} else {
+		$message = expandArrayAndTakeAwayNewLines($message);
+	}
+	return $message;
+}
+
+function expandArrayAndTakeAwayNewLines($array) {
+	$array = print_r($array, true);
+	$array = str_replace("\n",'',$array);
+	return $array;
 }
 
 function writeJSLogger($message){
@@ -20,7 +43,7 @@ function prefixCallerInfo($message){
 	$line = getLine($trace);
 	$class = getClass($trace);
 	$function = getFunction($trace);
-	
+
 	return formatMessage($file, $line, $class, $function, $message);
 }
 
@@ -33,7 +56,7 @@ function getFile($trace) {
 
 function getLine($trace) {
 	$caller = skipLoggerCallsFromTraceForFileAndLine($trace);
-	
+
 	return $caller['line'];
 }
 
@@ -63,31 +86,31 @@ function getClass($trace) {
 }
 
 function tryGetClass($trace) {
-		$caller = skipLoggerCallsFromTraceForClassAndFunction($trace);
-		$class = "";
-		if (isset($caller['class'])){
-			$class = $caller['class'];
-		}
-		return $class;
+	$caller = skipLoggerCallsFromTraceForClassAndFunction($trace);
+	$class = "";
+	if (isset($caller['class'])){
+		$class = $caller['class'];
+	}
+	return $class;
 }
 
 function skipLoggerCallsFromTraceForClassAndFunction($trace) {
-	if (isset($trace[2])){
-		$caller = $trace[2];
-	} else {
-		throw new Exception("No Function Caller");
+	$caller = $trace[SKIP_VALUE_FOR_CLASS_OR_FUNCTIONS];
+	if (!isset($caller)){
+		throw new Exception("Not function Caller");
 	}
+	
 	return $caller;
 }
 
 function skipLoggerCallsFromTraceForFileAndLine($trace) {
-	$caller = $trace[1];
+	$caller = $trace[SKIP_VALUE_FOR_FILE_OR_LINE];
 	return $caller;
 }
 
 function formatMessage($file, $line, $class, $function, $message) {
 	$newmessage = "[$file:$line]$class->$function()=>$message";
-	
-	return $newmessage;	
+
+	return $newmessage;
 }
 ?>

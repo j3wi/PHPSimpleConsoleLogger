@@ -22,7 +22,7 @@ It's quite simple, no log levels, no files, ... you only can configure if enable
 
 Format
 --------
-The format we use in this logger is: [*file*:*line*]*class*->*function*()=>*message*;
+The format we use in this logger is: [**file**:**line**]**class**->**function**()=>**message**
 
 It's defined in the **formatMessage** function if you want to change it::
 
@@ -44,10 +44,19 @@ the exit could be similar to::
 
 
 
-If the logger call is from a class method::
+If the logger call is from a class method:
 
 	logger("Create NoticesManager");
 
-the exit will be similar to::
+the exit will be similar to:
 
     [noticesManagerImp.php:9]NoticesManagerImp->__construct()=>Created NoticesManager
+
+
+We can also call the logger with an Array, for example:
+
+    logger($_POST);
+
+will produce for example:
+
+    [functions.php:5]->checkRedirect()=>Array(    [user] => foobar    [password] => 1234    [submit] => Acept) 
