@@ -4,7 +4,7 @@ include 'logger/simpleConsoleLoggerConstants.inc';
 function logger($message) {
 	if (LOG_ENABLED){
 		$messageWithInfo = prefixCallerInfo($message);
-		writeJSLogger($messageWithInfo);
+		writeJSLogger(addslashes($messageWithInfo));
 	}
 }
 
