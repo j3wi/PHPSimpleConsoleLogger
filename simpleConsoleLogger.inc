@@ -38,6 +38,13 @@ function getLine($trace) {
 }
 
 function getFunction($trace) {
+	try {
+		tryGetClass($trace);
+	} catch (Exception $e) {
+		return "";
+	}
+}
+function tryGetFunction($trace) {
 	$caller = skipLoggerCallsFromTraceForClassAndFunction($trace);
 
 	$function = $caller['function'];
@@ -48,16 +55,28 @@ function getFunction($trace) {
 }
 
 function getClass($trace) {
-	$caller = skipLoggerCallsFromTraceForClassAndFunction($trace);
-	$class = "";
-	if (isset($caller['class'])){
-		$class = $caller['class'];
+	try {
+		tryGetClass($trace);
+	} catch (Exception $e) {
+		return "";
 	}
-	return $class;
+}
+
+function tryGetClass($trace) {
+		$caller = skipLoggerCallsFromTraceForClassAndFunction($trace);
+		$class = "";
+		if (isset($caller['class'])){
+			$class = $caller['class'];
+		}
+		return $class;
 }
 
 function skipLoggerCallsFromTraceForClassAndFunction($trace) {
-	$caller = $trace[2];
+	if (isset($trace[2])){
+		$caller = $trace[2];
+	} else {
+		throw new Exception("No Function Caller");
+	}
 	return $caller;
 }
 
