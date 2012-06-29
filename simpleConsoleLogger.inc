@@ -17,11 +17,7 @@ function logIfLogEnabled($message) {
 }
 
 function correctMessage($message) {
-	if (is_string($message)) {
-		$message = addslashes($message);
-	} else {
-		$message = expandArrayAndTakeAwayNewLines($message);
-	}
+	$message = expandArrayAndTakeAwayNewLines($message);
 	return $message;
 }
 
