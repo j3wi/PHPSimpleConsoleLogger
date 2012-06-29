@@ -1,5 +1,5 @@
 <?php 
-include 'logger/simpleConsoleLoggerConstants.inc';
+include 'simpleConsoleLoggerConstants.inc';
 
 define('SKIP_VALUE_FOR_CLASS_OR_FUNCTIONS', 3);
 define('SKIP_VALUE_FOR_FILE_OR_LINE', 2);
