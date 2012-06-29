@@ -95,11 +95,11 @@ function tryGetClass($trace) {
 }
 
 function skipLoggerCallsFromTraceForClassAndFunction($trace) {
-	$caller = $trace[SKIP_VALUE_FOR_CLASS_OR_FUNCTIONS];
-	if (!isset($caller)){
+	if (isset($trace[SKIP_VALUE_FOR_CLASS_OR_FUNCTIONS])){
+		$caller = $trace[SKIP_VALUE_FOR_CLASS_OR_FUNCTIONS];
+	} else {
 		throw new Exception("Not function Caller");
 	}
-	
 	return $caller;
 }
 
